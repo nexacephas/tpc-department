@@ -1,7 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 :root {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+
   line-height: 1.5;
   font-weight: 400;
 
@@ -13,18 +15,24 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
+  /* Brand */
   --primary: #123b63;
   --primary-dark: #0c2d4d;
   --primary-light: #eaf2f8;
 
+  /* Background */
   --background: #f5f7fa;
   --surface: #ffffff;
+
+  /* Borders */
   --border: #e5e9ef;
 
+  /* Text */
   --text-primary: #172033;
   --text-secondary: #667085;
   --text-muted: #98a2b3;
 
+  /* Status */
   --success: #16845b;
   --success-bg: #e9f7f1;
 
@@ -34,27 +42,43 @@
   --danger: #c83c3c;
   --danger-bg: #fff0f0;
 
+  /* Shadows */
   --shadow-sm: 0 1px 3px rgba(16, 24, 40, 0.06);
   --shadow-md: 0 4px 12px rgba(16, 24, 40, 0.08);
 }
 
-* {
-  margin: 0;
-  padding: 0;
+/* =========================================
+   RESET
+========================================= */
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-html,
-body,
-#root {
-  min-height: 100%;
+html {
   width: 100%;
+  min-height: 100%;
 }
 
 body {
+  width: 100%;
+  min-width: 320px;
+  min-height: 100vh;
+
   margin: 0;
+  padding: 0;
+
   background: var(--background);
   color: var(--text-primary);
+
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
 }
 
 button,
@@ -66,6 +90,11 @@ textarea {
 
 button {
   cursor: pointer;
+}
+
+img,
+svg {
+  max-width: 100%;
 }
 
 a {
