@@ -14,9 +14,6 @@ import {
   Upload,
   FileText,
   MoreHorizontal,
-  Settings,
-  Archive,
-  Activity,
 } from "lucide-react";
 
 import Sidebar from "../components/Sidebar";
@@ -25,6 +22,10 @@ import Topbar from "../components/Topbar";
 import FileRegistration from "./FileRegistration";
 import FileRequests from "./FileRequests";
 import FileRegistry from "./FileRegistry";
+import Documents from "./Documents";
+import ArchivePage from "./Archive";
+import ActivityLog from "./ActivityLog";
+import SettingsPage from "./Settings";
 
 import "../App.css";
 
@@ -205,42 +206,6 @@ function Dashboard({ onLogout }) {
   };
 
   // =========================================
-  // PLACEHOLDER PAGE
-  // =========================================
-
-  const PlaceholderPage = ({
-    icon: Icon,
-    title,
-    description,
-  }) => {
-    return (
-      <div className="placeholder-page">
-
-        <div className="placeholder-icon">
-          <Icon size={32} />
-        </div>
-
-        <span className="dashboard-eyebrow">
-          TPC RECORDS MANAGEMENT
-        </span>
-
-        <h1>
-          {title}
-        </h1>
-
-        <p>
-          {description}
-        </p>
-
-        <span className="placeholder-badge">
-          Module coming next
-        </span>
-
-      </div>
-    );
-  };
-
-  // =========================================
   // FILE REQUESTS
   // =========================================
 
@@ -282,10 +247,8 @@ function Dashboard({ onLogout }) {
 
   if (activePage === "documents") {
     return renderPage(
-      <PlaceholderPage
-        icon={FileText}
-        title="Documents"
-        description="Browse and manage digital copies of departmental records."
+      <Documents
+        onNavigate={handleNavigation}
       />
     );
   }
@@ -296,24 +259,20 @@ function Dashboard({ onLogout }) {
 
   if (activePage === "archive") {
     return renderPage(
-      <PlaceholderPage
-        icon={Archive}
-        title="Archive"
-        description="Access archived departmental records and historical files."
+      <ArchivePage
+        onNavigate={handleNavigation}
       />
     );
   }
 
   // =========================================
-  // ACTIVITY
+  // ACTIVITY LOG
   // =========================================
 
   if (activePage === "activity") {
     return renderPage(
-      <PlaceholderPage
-        icon={Activity}
-        title="Activity Log"
-        description="Track registrations, requests, uploads and file movements."
+      <ActivityLog
+        onNavigate={handleNavigation}
       />
     );
   }
@@ -324,10 +283,8 @@ function Dashboard({ onLogout }) {
 
   if (activePage === "settings") {
     return renderPage(
-      <PlaceholderPage
-        icon={Settings}
-        title="Settings"
-        description="Configure your TPC records management preferences."
+      <SettingsPage
+        onNavigate={handleNavigation}
       />
     );
   }
