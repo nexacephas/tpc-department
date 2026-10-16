@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 
 import {
@@ -14,6 +15,7 @@ import {
   Upload,
   FileText,
   MoreHorizontal,
+  Sparkles,
 } from "lucide-react";
 
 import Sidebar from "../components/Sidebar";
@@ -25,6 +27,7 @@ import FileRegistry from "./FileRegistry";
 import Documents from "./Documents";
 import ArchivePage from "./Archive";
 import ActivityLog from "./ActivityLog";
+import AIAssistant from "./AIAssistant";
 import SettingsPage from "./Settings";
 
 import "../App.css";
@@ -179,7 +182,6 @@ function Dashboard({ onLogout }) {
   const renderPage = (content) => {
     return (
       <div className="app-layout">
-
         <Sidebar
           activePage={activePage}
           setActivePage={setActivePage}
@@ -200,7 +202,6 @@ function Dashboard({ onLogout }) {
             {content}
           </main>
         </div>
-
       </div>
     );
   };
@@ -211,9 +212,7 @@ function Dashboard({ onLogout }) {
 
   if (activePage === "requests") {
     return renderPage(
-      <FileRequests
-        onNavigate={handleNavigation}
-      />
+      <FileRequests onNavigate={handleNavigation} />
     );
   }
 
@@ -223,9 +222,7 @@ function Dashboard({ onLogout }) {
 
   if (activePage === "registry") {
     return renderPage(
-      <FileRegistry
-        onNavigate={handleNavigation}
-      />
+      <FileRegistry onNavigate={handleNavigation} />
     );
   }
 
@@ -235,9 +232,7 @@ function Dashboard({ onLogout }) {
 
   if (activePage === "register-file") {
     return renderPage(
-      <FileRegistration
-        onNavigate={handleNavigation}
-      />
+      <FileRegistration onNavigate={handleNavigation} />
     );
   }
 
@@ -247,9 +242,17 @@ function Dashboard({ onLogout }) {
 
   if (activePage === "documents") {
     return renderPage(
-      <Documents
-        onNavigate={handleNavigation}
-      />
+      <Documents onNavigate={handleNavigation} />
+    );
+  }
+
+  // =========================================
+  // AI DOCUMENT ASSISTANT
+  // =========================================
+
+  if (activePage === "ai-assistant") {
+    return renderPage(
+      <AIAssistant onNavigate={handleNavigation} />
     );
   }
 
@@ -259,9 +262,7 @@ function Dashboard({ onLogout }) {
 
   if (activePage === "archive") {
     return renderPage(
-      <ArchivePage
-        onNavigate={handleNavigation}
-      />
+      <ArchivePage onNavigate={handleNavigation} />
     );
   }
 
@@ -271,9 +272,7 @@ function Dashboard({ onLogout }) {
 
   if (activePage === "activity") {
     return renderPage(
-      <ActivityLog
-        onNavigate={handleNavigation}
-      />
+      <ActivityLog onNavigate={handleNavigation} />
     );
   }
 
@@ -283,9 +282,7 @@ function Dashboard({ onLogout }) {
 
   if (activePage === "settings") {
     return renderPage(
-      <SettingsPage
-        onNavigate={handleNavigation}
-      />
+      <SettingsPage onNavigate={handleNavigation} />
     );
   }
 
@@ -295,92 +292,58 @@ function Dashboard({ onLogout }) {
 
   return renderPage(
     <>
-      {/* =========================================
-          PAGE HEADER
-      ========================================= */}
+      {/* PAGE HEADER */}
 
       <div className="dashboard-header">
-
         <div>
-
           <span className="dashboard-eyebrow">
             TRANSPORT PLANNING & COORDINATION
           </span>
 
-          <h1>
-            Dashboard
-          </h1>
+          <h1>Dashboard</h1>
 
           <p>
             Monitor departmental records, file requests
             and recent activity.
           </p>
-
         </div>
 
         <button
           type="button"
           className="register-file-button"
-          onClick={() =>
-            handleNavigation("register-file")
-          }
+          onClick={() => handleNavigation("register-file")}
         >
           <Plus size={18} />
-
-          <span>
-            Register New File
-          </span>
-
+          <span>Register New File</span>
         </button>
-
       </div>
 
-
-      {/* =========================================
-          SEARCH
-      ========================================= */}
+      {/* SEARCH */}
 
       <div className="dashboard-search">
-
         <Search size={20} />
 
         <input
           type="text"
           placeholder="Search by file reference, title or subject..."
           value={searchQuery}
-          onChange={(e) =>
-            setSearchQuery(e.target.value)
-          }
+          onChange={(event) => setSearchQuery(event.target.value)}
+          aria-label="Search recent files"
         />
 
-        <span className="search-shortcut">
-          Ctrl + K
-        </span>
-
+        <span className="search-shortcut">Ctrl + K</span>
       </div>
 
-
-      {/* =========================================
-          STATISTICS
-      ========================================= */}
+      {/* STATISTICS */}
 
       <section className="stats-grid">
-
         {statistics.map((stat) => {
-
           const Icon = stat.icon;
 
           return (
-            <div
-              className="stat-card"
-              key={stat.title}
-            >
-
+            <div className="stat-card" key={stat.title}>
               <div className="stat-card-top">
-
-                <div
-                  className={`stat-icon stat-icon-${stat.type}`}
-                >
+                <div className={`stat-icon stat-icon-${stat.type}`}>
                   <Icon size={21} />
                 </div>
 
@@ -392,134 +355,69 @@ function Dashboard({ onLogout }) {
                   {stat.type !== "orange" && (
                     <ArrowUpRight size={13} />
                   )}
-
                 </span>
-
               </div>
 
-              <div className="stat-card-value">
-                {stat.value}
-              </div>
+              <div className="stat-card-value">{stat.value}</div>
 
-              <h3>
-                {stat.title}
-              </h3>
+              <h3>{stat.title}</h3>
 
-              <p>
-                {stat.description}
-              </p>
-
+              <p>{stat.description}</p>
             </div>
           );
-
         })}
-
       </section>
 
-
-      {/* =========================================
-          TWO COLUMN AREA
-      ========================================= */}
+      {/* RECENT FILES AND ACTIVITY */}
 
       <section className="dashboard-columns">
-
-        {/* =========================================
-            RECENT FILES
-        ========================================= */}
+        {/* RECENT FILES */}
 
         <div className="dashboard-panel recent-files-panel">
-
           <div className="panel-header">
-
             <div>
-
-              <h2>
-                Recent Files
-              </h2>
-
-              <p>
-                Recently registered departmental records.
-              </p>
-
+              <h2>Recent Files</h2>
+              <p>Recently registered departmental records.</p>
             </div>
 
             <button
               type="button"
               className="panel-link"
-              onClick={() =>
-                handleNavigation("registry")
-              }
+              onClick={() => handleNavigation("registry")}
             >
               View all
-
               <ArrowRight size={15} />
-
             </button>
-
           </div>
 
-
           <div className="files-table-wrapper">
-
             <table className="files-table">
-
               <thead>
-
                 <tr>
-
-                  <th>
-                    File Reference
-                  </th>
-
-                  <th>
-                    Subject
-                  </th>
-
-                  <th>
-                    Category
-                  </th>
-
-                  <th>
-                    Status
-                  </th>
-
-                  <th>
-                    Date
-                  </th>
-
-                  <th>
-                  </th>
-
+                  <th>File Reference</th>
+                  <th>Subject</th>
+                  <th>Category</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th aria-label="Actions" />
                 </tr>
-
               </thead>
 
               <tbody>
-
                 {filteredFiles.map((file) => (
-
                   <tr key={file.reference}>
-
                     <td>
-
                       <div className="file-reference">
-
                         <div className="file-table-icon">
                           <FileText size={16} />
                         </div>
 
-                        <span>
-                          {file.reference}
-                        </span>
-
+                        <span>{file.reference}</span>
                       </div>
-
                     </td>
 
                     <td>
-                      <span className="file-title">
-                        {file.title}
-                      </span>
+                      <span className="file-title">{file.title}</span>
                     </td>
 
                     <td>
@@ -529,7 +427,6 @@ function Dashboard({ onLogout }) {
                     </td>
 
                     <td>
-
                       <span
                         className={`file-status ${
                           file.status === "Active"
@@ -539,262 +436,170 @@ function Dashboard({ onLogout }) {
                       >
                         {file.status}
                       </span>
-
                     </td>
 
                     <td>
-
-                      <span className="file-date">
-                        {file.date}
-                      </span>
-
+                      <span className="file-date">{file.date}</span>
                     </td>
 
                     <td>
-
                       <button
                         type="button"
                         className="file-more-button"
                         title="More options"
+                        aria-label={`More options for ${file.reference}`}
+                        onClick={() => handleNavigation("registry")}
                       >
                         <MoreHorizontal size={17} />
                       </button>
-
                     </td>
-
                   </tr>
-
                 ))}
-
               </tbody>
-
             </table>
 
-
             {filteredFiles.length === 0 && (
-
               <div className="empty-search-state">
-
                 <Search size={28} />
-
-                <h3>
-                  No files found
-                </h3>
-
+                <h3>No files found</h3>
                 <p>
                   Try another reference, title or category.
                 </p>
-
               </div>
-
             )}
-
           </div>
-
         </div>
 
-
-        {/* =========================================
-            RECENT ACTIVITY
-        ========================================= */}
+        {/* RECENT ACTIVITY */}
 
         <div className="dashboard-panel activity-panel">
-
           <div className="panel-header">
-
             <div>
-
-              <h2>
-                Recent Activity
-              </h2>
-
-              <p>
-                Latest activity in the records system.
-              </p>
-
+              <h2>Recent Activity</h2>
+              <p>Latest activity in the records system.</p>
             </div>
 
             <button
               type="button"
               className="panel-link"
-              onClick={() =>
-                handleNavigation("activity")
-              }
+              onClick={() => handleNavigation("activity")}
             >
               View all
-
               <ArrowRight size={15} />
-
             </button>
-
           </div>
 
-
           <div className="activity-list">
-
             {activities.map((activity, index) => {
-
               const Icon = activity.icon;
 
               return (
-                <div
-                  className="activity-item"
-                  key={index}
-                >
-
+                <div className="activity-item" key={index}>
                   <div className="activity-icon">
                     <Icon size={17} />
                   </div>
 
                   <div className="activity-content">
-
-                    <strong>
-                      {activity.title}
-                    </strong>
-
-                    <span>
-                      {activity.description}
-                    </span>
-
+                    <strong>{activity.title}</strong>
+                    <span>{activity.description}</span>
                   </div>
 
-                  <time>
-                    {activity.time}
-                  </time>
-
+                  <time>{activity.time}</time>
                 </div>
               );
-
             })}
-
           </div>
-
         </div>
-
       </section>
 
-
-      {/* =========================================
-          QUICK ACTIONS
-      ========================================= */}
+      {/* QUICK ACTIONS */}
 
       <section className="quick-actions">
-
         <div className="quick-action-header">
-
           <div>
-
-            <h2>
-              Quick Actions
-            </h2>
-
-            <p>
-              Common records management tasks.
-            </p>
-
+            <h2>Quick Actions</h2>
+            <p>Common records management tasks.</p>
           </div>
-
         </div>
 
-
         <div className="quick-action-grid">
-
           {/* REGISTER FILE */}
 
           <button
             type="button"
             className="quick-action-card"
-            onClick={() =>
-              handleNavigation("register-file")
-            }
+            onClick={() => handleNavigation("register-file")}
           >
-
             <div className="quick-action-icon">
               <Plus size={20} />
             </div>
 
             <div>
-
-              <strong>
-                Register New File
-              </strong>
-
-              <span>
-                Add a new departmental record
-              </span>
-
+              <strong>Register New File</strong>
+              <span>Add a new departmental record</span>
             </div>
 
             <ArrowRight size={17} />
-
           </button>
-
 
           {/* FILE REQUESTS */}
 
           <button
             type="button"
             className="quick-action-card"
-            onClick={() =>
-              handleNavigation("requests")
-            }
+            onClick={() => handleNavigation("requests")}
           >
-
             <div className="quick-action-icon">
               <ClipboardList size={20} />
             </div>
 
             <div>
-
-              <strong>
-                File Requests
-              </strong>
-
-              <span>
-                Review pending file requests
-              </span>
-
+              <strong>File Requests</strong>
+              <span>Review pending file requests</span>
             </div>
 
             <ArrowRight size={17} />
-
           </button>
-
 
           {/* DOCUMENTS */}
 
           <button
             type="button"
             className="quick-action-card"
-            onClick={() =>
-              handleNavigation("documents")
-            }
+            onClick={() => handleNavigation("documents")}
           >
-
             <div className="quick-action-icon">
               <FileText size={20} />
             </div>
 
             <div>
-
-              <strong>
-                Documents
-              </strong>
-
-              <span>
-                Browse uploaded documents
-              </span>
-
+              <strong>Documents</strong>
+              <span>Browse uploaded documents</span>
             </div>
 
             <ArrowRight size={17} />
-
           </button>
 
+          {/* AI DOCUMENT ASSISTANT */}
+
+          <button
+            type="button"
+            className="quick-action-card"
+            onClick={() => handleNavigation("ai-assistant")}
+          >
+            <div className="quick-action-icon">
+              <Sparkles size={20} />
+            </div>
+
+            <div>
+              <strong>AI Document Assistant</strong>
+              <span>Draft, summarise and reformat text</span>
+            </div>
+
+            <ArrowRight size={17} />
+          </button>
         </div>
-
       </section>
-
     </>
   );
 }

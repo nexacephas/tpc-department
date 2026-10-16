@@ -1,3 +1,4 @@
+
 import {
   LayoutDashboard,
   Files,
@@ -10,6 +11,7 @@ import {
   FolderLock,
   ChevronLeft,
   Plus,
+  Sparkles,
 } from "lucide-react";
 
 import "../App.css";
@@ -44,6 +46,11 @@ function Sidebar({
       page: "documents",
     },
     {
+      label: "AI Document Assistant",
+      icon: Sparkles,
+      page: "ai-assistant",
+    },
+    {
       label: "Archive",
       icon: Archive,
       page: "archive",
@@ -69,18 +76,22 @@ function Sidebar({
     }
   };
 
+  const handleAddRecord = () => {
+    handleNavigation("register-file");
+  };
+
+  const handleCollapse = () => {
+    setCollapsed(!collapsed);
+  };
+
   return (
     <aside
       className={`app-sidebar ${
         collapsed ? "sidebar-collapsed" : ""
       }`}
     >
-      {/* =========================================
-          SIDEBAR HEADER
-      ========================================= */}
-
+      {/* SIDEBAR HEADER */}
       <div className="sidebar-header">
-
         <div className="sidebar-logo">
           <FolderLock size={20} />
         </div>
@@ -91,200 +102,119 @@ function Sidebar({
             <span>Ministry of Transportation</span>
           </div>
         )}
-
       </div>
 
-
-      {/* =========================================
-          NAVIGATION
-      ========================================= */}
-
+      {/* NAVIGATION */}
       <nav className="sidebar-navigation">
-
         <span className="sidebar-section-label">
           {!collapsed && "WORKSPACE"}
         </span>
 
-
         {navigation.map((item) => {
           const Icon = item.icon;
+          const isActive = activePage === item.page;
 
           return (
             <button
               key={item.page}
               type="button"
               className={`sidebar-nav-item ${
-                activePage === item.page
-                  ? "sidebar-nav-active"
-                  : ""
+                isActive ? "sidebar-nav-active" : ""
               }`}
-              onClick={() =>
-                handleNavigation(item.page)
-              }
-              title={
-                collapsed
-                  ? item.label
-                  : undefined
-              }
+              onClick={() => handleNavigation(item.page)}
+              title={collapsed ? item.label : undefined}
+              aria-label={item.label}
+              aria-current={isActive ? "page" : undefined}
             >
               <Icon size={18} />
 
-              {!collapsed && (
-                <span>
-                  {item.label}
-                </span>
-              )}
+              {!collapsed && <span>{item.label}</span>}
             </button>
           );
         })}
 
-
-        {/* =========================================
-            QUICK ACTION
-        ========================================= */}
-
+        {/* QUICK ACTION */}
         <button
           type="button"
           className="sidebar-add-record"
-          onClick={() =>
-            onNavigate
-              ? onNavigate("register-file")
-              : null
-          }
-          title={
-            collapsed
-              ? "Add New Record"
-              : undefined
-          }
+          onClick={handleAddRecord}
+          title={collapsed ? "Add New Record" : undefined}
+          aria-label="Add New Record"
         >
           <Plus size={18} />
 
-          {!collapsed && (
-            <span>
-              Add New Record
-            </span>
-          )}
+          {!collapsed && <span>Add New Record</span>}
         </button>
 
-
-        {/* =========================================
-            SYSTEM
-        ========================================= */}
-
+        {/* SYSTEM */}
         <span className="sidebar-section-label sidebar-settings-label">
           {!collapsed && "SYSTEM"}
         </span>
 
-
         <button
           type="button"
           className={`sidebar-nav-item ${
-            activePage === "settings"
-              ? "sidebar-nav-active"
-              : ""
+            activePage === "settings" ? "sidebar-nav-active" : ""
           }`}
-          onClick={() =>
-            handleNavigation("settings")
-          }
-          title={
-            collapsed
-              ? "Settings"
-              : undefined
+          onClick={() => handleNavigation("settings")}
+          title={collapsed ? "Settings" : undefined}
+          aria-label="Settings"
+          aria-current={
+            activePage === "settings" ? "page" : undefined
           }
         >
           <Settings size={18} />
 
-          {!collapsed && (
-            <span>
-              Settings
-            </span>
-          )}
+          {!collapsed && <span>Settings</span>}
         </button>
-
       </nav>
 
-
-      {/* =========================================
-          SIDEBAR BOTTOM
-      ========================================= */}
-
+      {/* SIDEBAR BOTTOM */}
       <div className="sidebar-bottom">
-
         {/* USER */}
-
         {!collapsed && (
           <div className="sidebar-user">
-
-            <div className="sidebar-user-avatar">
-              AD
-            </div>
+            <div className="sidebar-user-avatar">AD</div>
 
             <div className="sidebar-user-info">
-
-              <strong>
-                Admin Officer
-              </strong>
-
-              <span>
-                TPC Department
-              </span>
-
+              <strong>Admin Officer</strong>
+              <span>TPC Department</span>
             </div>
-
           </div>
         )}
 
-
         {/* SIGN OUT */}
-
         <button
           type="button"
           className="sidebar-nav-item sidebar-logout"
           onClick={handleLogout}
-          title="Sign out"
+          title={collapsed ? "Sign out" : undefined}
+          aria-label="Sign out"
         >
           <LogOut size={18} />
 
-          {!collapsed && (
-            <span>
-              Sign out
-            </span>
-          )}
+          {!collapsed && <span>Sign out</span>}
         </button>
 
-
         {/* COLLAPSE */}
-
         <button
           type="button"
           className="sidebar-collapse-button"
-          onClick={() =>
-            setCollapsed(!collapsed)
+          onClick={handleCollapse}
+          title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          aria-label={
+            collapsed ? "Expand sidebar" : "Collapse sidebar"
           }
-          title={
-            collapsed
-              ? "Expand sidebar"
-              : "Collapse sidebar"
-          }
+          aria-expanded={!collapsed}
         >
           <ChevronLeft
             size={16}
-            className={
-              collapsed
-                ? "rotate-icon"
-                : ""
-            }
+            className={collapsed ? "rotate-icon" : ""}
           />
 
-          {!collapsed && (
-            <span>
-              Collapse sidebar
-            </span>
-          )}
+          {!collapsed && <span>Collapse sidebar</span>}
         </button>
-
       </div>
-
     </aside>
   );
 }
